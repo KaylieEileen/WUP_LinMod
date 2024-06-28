@@ -71,19 +71,60 @@ This plot shows that as arm strength increases , sims scores increase too
 
 
 ## Model 3 SIM~ARM+GRIP
+prediction interval of SIMS given a value of 94  for GRIP and 88 for ARM.  
+
+```{r}
+advNN <- ggplot(davisdata,aes(y=Height,x=dadheight,z=momheight))
+```
+```{r}
+model.2 <- lm(Height~dadheight + momheight,data=davisdata)
+summary.lm(model.2)
+``` 
+
+
 
 ### Numerical results (cor)
+```{r}
+df=data.frame(SIMS=data$SIMS,GRIP=data$GRIP,ARM=data$ARM)
+cor(df)
+```
+
+Correlation matrix shows that SIMS correlatees with GRIP and ARM, also that 
 
 `
   
 ### Inferential  (Build 2-dimentional model.3)
+```{r}
+model.3=lm(SIMS~ARM+GRIP,data=data)
+summary.lm(model.3)
+```
 
+p-value from the F-statistic is 0.0000000000000002.2, this means that the data fits the model and    
+p-values for the model parameters: intercept, coefficient of ARM and coefficiant of GRIP   
+each paramenter is significantly 
 #### predict model.3 at target point
-  
+prediction interval of SIMS given a value of 94  for GRIP and 88 for ARM.
+
+```{r}
+newdata = data.frame(GRIP=94, ARM=88)
+predSIMS = predict(model.3, newdata, interval = 'pred')
+print(predSIMS)
+```
+
+The predicted SIMS score for GRIP=94, ARM=88 is 0.150
+
 
 ## Comparing nested models ANOVA Test
 
 ### Model.1 vs Model.3
+```{r}
+model.1.1=lm(SIMS~ARM,data=data0)
+anova(model.1, model.3)
+summary.lm(model.1)
+```
+
+
+
 ### Model.2 vs Model.3
 
 ## Informally compare Model.1 with model.2
